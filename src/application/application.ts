@@ -1,3 +1,1 @@
-import { sayHello } from './useCases/sayHello/sayHello'
-
-console.log(sayHello())
+console.log('hi there')
