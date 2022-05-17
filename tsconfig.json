@@ -1,0 +1,4 @@
+// Extends base; for typechecking, etc.
+{
+  "extends": "./tsconfig.base.json"
+}

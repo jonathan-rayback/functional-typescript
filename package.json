@@ -1,0 +1,40 @@
+{
+  "name": "functioan-typescript",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build-ts": "tsc -p tsconfig.build.json",
+    "build": "rimraf dist && yarn build-ts",
+    "test": "yarn jest",
+    "lint": "eslint .",
+    "dev-start": "yarn build && node dist/main.js",
+    "start": "node dist/main.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/node": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.0",
+    "eslint": "^7.12.1",
+    "eslint-config-standard-with-typescript": "latest",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.0.0",
+    "jest": "^27.4.5",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.4.0"
+  },
+  "dependencies": {
+    "typescript": "4.4.4"
+  },
+  "eslintConfig": {
+    "extends": "standard-with-typescript",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "ignorePatterns": [
+      "**/*.js"
+    ]
+  }
+}

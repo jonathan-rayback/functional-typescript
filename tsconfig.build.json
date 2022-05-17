@@ -1,0 +1,12 @@
+// Extends base; files to compile on applicationbuild, leaves out tests, etc.
+{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/tests"
+  ]
+}
