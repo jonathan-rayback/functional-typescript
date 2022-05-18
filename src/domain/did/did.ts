@@ -1,12 +1,42 @@
+import * as Heket from 'heket'
+
 export class Did {
   public method: string
   public identifier: string
 
   constructor (rawDid: string) {
-    this.method = this.extractMethod(rawDid)
-    this.identifier = this.extractIdentifier(rawDid)
+    const didParts = this.parseRawDid(rawDid)
+    this.method = didParts[1]
+    this.identifier = didParts[2]
   }
 
-  private readonly extractMethod = (rawDid: string): string => rawDid.split(':')[1] // the second element in a well-formed DID is the method
-  private readonly extractIdentifier = (rawDid: string): string => rawDid.split(':')[2] // the third element in a well-formed DID is the identifier
+  private readonly parseRawDid = (rawDid: string): string[] => {
+    this.checkDidSyntax(rawDid)
+    const didParts = rawDid.split(':')
+    return didParts
+  }
+
+  // Formal ABNF syntax from DID spec
+  private readonly checkDidSyntax = (rawDid: string): void => {
+    const parser = Heket.createParser(`
+      did               = "did:" method-name ":" method-specific-id
+      method-name        = 1*method-char
+      method-char        = %x61-7A / DIGIT
+      method-specific-id = *( *idchar ":" ) 1*idchar
+      idchar             = ALPHA / DIGIT / "." / "-" / "_" / pct-encoded
+      pct-encoded        = "%" HEXDIG HEXDIG
+    `)
+    try {
+      parser.parse(rawDid)
+    } catch (e) {
+      if (e instanceof Error) { throw new MalformedDidError(e.message) }
+    }
+  }
+}
+
+class MalformedDidError extends Error {
+  constructor (message: string) {
+    super(message)
+    this.name = 'MalformedDidError'
+  }
 }

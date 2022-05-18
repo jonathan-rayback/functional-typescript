@@ -8,3 +8,11 @@ test('DID classes parses well-formed DID correctly', () => {
   expect(myMethod).toBe('abc')
   expect(myIdentifier).toBe('12345')
 })
+
+test('Malformed DID throws error', () => {
+  const malformedDid = 'dd:abc:12345'
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const myDid = new Did(malformedDid)
+  }).toThrow(Error)
+})
