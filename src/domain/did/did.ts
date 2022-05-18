@@ -1,8 +1,8 @@
 import * as Heket from 'heket'
 
 export class Did {
-  public method: string
-  public identifier: string
+  public readonly method: string
+  public readonly identifier: string
 
   constructor (rawDid: string) {
     const didParts = this.parseRawDid(rawDid)

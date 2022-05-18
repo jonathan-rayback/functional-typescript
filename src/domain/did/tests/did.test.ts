@@ -1,6 +1,6 @@
 import { Did } from '../did'
 
-test('DID classes parses well-formed DID correctly', () => {
+test('Parses well-formed DID correctly', () => {
   const myRawDid = 'did:abc:12345'
   const myDid = new Did(myRawDid)
   const myMethod = myDid.method
