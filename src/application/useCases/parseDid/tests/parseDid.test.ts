@@ -15,3 +15,11 @@ test('Malformed DID throws error', () => {
     const myDid: Did.Did = ParseDid(malformedDid)
   }).toThrow(Did.MalformedDidError)
 })
+
+test('Parses well-formed Indy DID correctly', () => {
+  const indyDid = 'did:indy:sovrin:staging:6cgbu8ZPoWTnR5Rv5JcSMB'
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const myDid: Did.Did = ParseDid(indyDid)
+  expect(myDid.methodName).toBe('indy')
+  expect(myDid.methodSpecificId).toBe('sovrin:staging:6cgbu8ZPoWTnR5Rv5JcSMB')
+})

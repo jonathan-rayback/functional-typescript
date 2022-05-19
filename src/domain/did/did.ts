@@ -3,7 +3,7 @@ export interface Did {
   methodSpecificId: string
 }
 
-export type DidChecker = (rawDid: string) => void
+export type DidChecker = (rawDid: string) => Did
 
 export class MalformedDidError extends Error {
   constructor (message: string) {
