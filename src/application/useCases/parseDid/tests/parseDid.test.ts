@@ -1,25 +1,33 @@
 import * as Did from '../../../../domain/did/did'
-import { ParseDid } from '../parseDid'
+import * as ParseDid from '../parseDid'
 
-test('Parses well-formed generic DID correctly', () => {
-  const myRawDid = 'did:abc:12345'
-  const myDid: Did.Did = ParseDid(myRawDid)
-  expect(myDid.methodName).toBe('abc')
-  expect(myDid.methodSpecificId).toBe('12345')
+test('Can parse well-formed generic DID', () => {
+  const genericDidString = 'did:abc:12345'
+  const genericDid: Did.GenericDid = ParseDid.ParseGenericDid(Did.Type.Generic, genericDidString)
+  expect(genericDid.methodName).toBe('abc')
+  expect(genericDid.methodSpecificId).toBe('12345')
 })
 
-test('Malformed DID throws error', () => {
-  const malformedDid = 'dd:abc:12345'
+test('Can parse well-formed Indy Did with no subspace', () => {
+  const indyDidString = 'did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSMB'
+  const indyDid: Did.IndyDid = ParseDid.ParseIndyDid(Did.Type.Indy, indyDidString)
+  expect(indyDid.methodName).toBe('indy')
+  expect(indyDid.indyNamespace).toBe('sovrin:') // Indy DID spec requires the last character of the namespace to be ':'
+  expect(indyDid.methodSpecificId).toBe('6cgbu8ZPoWTnR5Rv5JcSMB')
+})
+
+test('Can parse well-formed Indy Did with subspace', () => {
+  const indyDidString = 'did:indy:sovrin:staging:6cgbu8ZPoWTnR5Rv5JcSMB'
+  const indyDid: Did.IndyDid = ParseDid.ParseIndyDid(Did.Type.Indy, indyDidString)
+  expect(indyDid.methodName).toBe('indy')
+  expect(indyDid.indyNamespace).toBe('sovrin:staging:') // Indy DID spec requires the last character of the namespace to be ':'
+  expect(indyDid.methodSpecificId).toBe('6cgbu8ZPoWTnR5Rv5JcSMB')
+})
+
+test('Malformed generic DID throws error', () => {
+  const malformedGenericDidString = 'dd:abc:12345'
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const myDid: Did.Did = ParseDid(malformedDid)
+    const genericDid: Did.GenericDid = ParseDid.ParseGenericDid(Did.Type.Generic, malformedGenericDidString)
   }).toThrow(Did.MalformedDidError)
-})
-
-test('Parses well-formed Indy DID correctly', () => {
-  const indyDid = 'did:indy:sovrin:staging:6cgbu8ZPoWTnR5Rv5JcSMB'
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const myDid: Did.Did = ParseDid(indyDid)
-  expect(myDid.methodName).toBe('indy')
-  expect(myDid.methodSpecificId).toBe('sovrin:staging:6cgbu8ZPoWTnR5Rv5JcSMB')
 })
