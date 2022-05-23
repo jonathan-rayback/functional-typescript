@@ -14,7 +14,7 @@ export interface IndyDid extends Did {
   indyNamespace: string
 }
 
-export type DidChecker = (didString: string) => void
+export type DidParser = (didString: string) => Did
 
 export class MalformedDidError extends Error {
   constructor (message: string) {
