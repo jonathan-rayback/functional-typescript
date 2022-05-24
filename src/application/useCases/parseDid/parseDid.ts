@@ -1,8 +1,8 @@
 import * as Heket from 'heket'
 import * as Did from '../../../domain/did/did'
 
-// Disable RegEx caching in ABNF parser. Matches will take longer, but will avoid infinite loops.
-Heket.disableRegexCaching()
+type DidParser = (didString: string) => Did.Did
+type DidParserErrorHandler = (errorMessage: string) => void
 
 const coreABNFString: string = `
   did                = "did:" methodname ":" methodspecificid
@@ -34,7 +34,7 @@ const indyABNFString: string = `
 
 const indyABNFParser: Heket.Parser = Heket.createParser(indyABNFString)
 
-export const DidParserFactory = (type: Did.Type): Did.DidParser => {
+export const DidParserFactory = (type: Did.Type): DidParser => {
   switch (type) {
     case Did.Type.Core:
       return coreDidParser
@@ -60,7 +60,7 @@ const coreDidParser = (didString: string): Did.CoreDid => {
   }
 }
 
-const coreDidParseErrorHandler: Did.DidParserErrorHandler = (message: string): void => {
+const coreDidParseErrorHandler: DidParserErrorHandler = (message: string): void => {
   throw new Did.MalformedCoreDidError(message)
 }
 
@@ -81,11 +81,11 @@ const indyDidParser = (didString: string): Did.IndyDid => {
   }
 }
 
-const indyDidParseErrorHandler: Did.DidParserErrorHandler = (message: string): void => {
+const indyDidParseErrorHandler: DidParserErrorHandler = (message: string): void => {
   throw new Did.MalformedIndyDidError(message)
 }
 
-const matchABNF = (parser: Heket.Parser, rawString: string, handler: Did.DidParserErrorHandler): Heket.Match | undefined => {
+const matchABNF = (parser: Heket.Parser, rawString: string, handler: DidParserErrorHandler): Heket.Match | undefined => {
   try {
     return parser.parse(rawString)
   } catch (e) {
