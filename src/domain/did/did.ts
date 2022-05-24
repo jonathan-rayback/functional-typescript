@@ -1,5 +1,5 @@
 export enum Type {
-  Generic = 'GENERIC',
+  Core = 'CORE',
   Indy = 'INDY'
 }
 
@@ -8,17 +8,25 @@ export interface Did {
   methodSpecificId: string
 }
 
-export interface GenericDid extends Did {}
+export interface CoreDid extends Did {}
 
 export interface IndyDid extends Did {
   indyNamespace: string
 }
 
 export type DidParser = (didString: string) => Did
+export type DidParserErrorHandler = (errorMessage: string) => void
 
-export class MalformedDidError extends Error {
+export class MalformedCoreDidError extends Error {
   constructor (message: string) {
     super(message)
-    this.name = 'MalformedDidError'
+    this.name = 'MalformedCoreDidError'
+  }
+}
+
+export class MalformedIndyDidError extends Error {
+  constructor (message: string) {
+    super(message)
+    this.name = 'MalformedIndyDidError'
   }
 }

@@ -1,11 +1,27 @@
 import * as Did from '../../../../domain/did/did'
 import * as ParseDid from '../parseDid'
 
-test('Can parse well-formed generic DID', () => {
-  const genericDidString = 'did:abc:12345'
-  const genericDid: Did.GenericDid = ParseDid.DidParserFactory(Did.Type.Generic)(genericDidString)
-  expect(genericDid.methodName).toBe('abc')
-  expect(genericDid.methodSpecificId).toBe('12345')
+test('Can parse well-formed core DID', () => {
+  const coreDidString = 'did:abc:12345'
+  const coreDid: Did.CoreDid = ParseDid.DidParserFactory(Did.Type.Core)(coreDidString)
+  expect(coreDid.methodName).toBe('abc')
+  expect(coreDid.methodSpecificId).toBe('12345')
+})
+
+test('Malformed core DID throws error', () => {
+  const malformedCoreDidString = 'dd:abc:12345'
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const genericDid: Did.CoreDid = ParseDid.DidParserFactory(Did.Type.Core)(malformedCoreDidString)
+  }).toThrow(Did.MalformedCoreDidError)
+})
+
+test('Alternate malformed core DID throws error', () => {
+  const malformedCoreDidString = 'did:abc:12345*!@#$(&)'
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const genericDid: Did.CoreDid = ParseDid.DidParserFactory(Did.Type.Core)(malformedCoreDidString)
+  }).toThrow(Did.MalformedCoreDidError)
 })
 
 test('Can parse well-formed Indy Did with no subspace', () => {
@@ -27,10 +43,54 @@ test('Can parse well-formed Indy Did with subspace', () => {
   expect(indyDid.methodSpecificId).toBe('6cgbu8ZPoWTnR5Rv5JcSMB')
 })
 
-test('Malformed generic DID throws error', () => {
-  const malformedGenericDidString = 'dd:abc:12345'
+test('Mispelled method name in malformed Indy DID throws error', () => {
+  const malformedIndyDidString = 'did:iny:sovrin:6cgbu8ZPoWTnR5Rv5JcSMB'
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const genericDid: Did.GenericDid = ParseDid.DidParserFactory(Did.Type.Generic)(malformedGenericDidString)
-  }).toThrow(Did.MalformedDidError)
+    const indyDid: Partial<Did.IndyDid> = ParseDid.DidParserFactory(Did.Type.Indy)(malformedIndyDidString)
+  }).toThrow(Did.MalformedIndyDidError)
+})
+
+test('No namespace in malformed Indy DID throws error', () => {
+  const malformedIndyDidString = 'did:indy:6cgbu8ZPoWTnR5Rv5JcSMB'
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const indyDid: Partial<Did.IndyDid> = ParseDid.DidParserFactory(Did.Type.Indy)(malformedIndyDidString)
+  }).toThrow(Did.MalformedIndyDidError)
+})
+
+test('Non-Base-58 "0" char in malformed Indy DID with throws error', () => {
+  const charToTest = '0'
+  const indyDidStringWithIllegalBase58Char = 'did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const indyDid: Partial<Did.IndyDid> = ParseDid.DidParserFactory(Did.Type.Indy)(indyDidStringWithIllegalBase58Char)
+  }).toThrow(Did.MalformedIndyDidError)
+})
+
+test('Non-Base-58 "O" char in malformed Indy DID with throws error', () => {
+  const charToTest = 'O'
+  const indyDidStringWithIllegalBase58Char = 'did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const indyDid: Partial<Did.IndyDid> = ParseDid.DidParserFactory(Did.Type.Indy)(indyDidStringWithIllegalBase58Char)
+  }).toThrow(Did.MalformedIndyDidError)
+})
+
+test('Non-Base-58 "I" char in malformed Indy DID with throws error', () => {
+  const charToTest = 'I'
+  const indyDidStringWithIllegalBase58Char = 'did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const indyDid: Partial<Did.IndyDid> = ParseDid.DidParserFactory(Did.Type.Indy)(indyDidStringWithIllegalBase58Char)
+  }).toThrow(Did.MalformedIndyDidError)
+})
+
+test('Non-Base-58 "l" char in malformed Indy DID with throws error', () => {
+  const charToTest = 'l'
+  const indyDidStringWithIllegalBase58Char = 'did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const indyDid: Partial<Did.IndyDid> = ParseDid.DidParserFactory(Did.Type.Indy)(indyDidStringWithIllegalBase58Char)
+  }).toThrow(Did.MalformedIndyDidError)
 })
