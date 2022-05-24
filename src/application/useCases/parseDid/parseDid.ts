@@ -34,18 +34,18 @@ const indyABNFString: string = `
 
 const indyABNFParser: Heket.Parser = Heket.createParser(indyABNFString)
 
-export const DidParserFactory = (type: Did.Type): DidParser => {
+export const ParseDid = (type: Did.Type, didString: string): Did.Did => {
   switch (type) {
     case Did.Type.Core:
-      return coreDidParser
+      return coreDidParser(didString)
     case Did.Type.Indy:
-      return indyDidParser
+      return indyDidParser(didString)
     default:
-      return coreDidParser
+      return coreDidParser(didString)
   }
 }
 
-const coreDidParser = (didString: string): Did.CoreDid => {
+const coreDidParser: DidParser = (didString: string): Did.CoreDid => {
   // Must allow for the possibility that no Match object is returned
   // or else TypeScript compiler won't allow me to access later.
   const match: Heket.Match | undefined = matchABNF(coreABNFParser, didString, coreDidParseErrorHandler)
@@ -64,7 +64,7 @@ const coreDidParseErrorHandler: DidParserErrorHandler = (message: string): void 
   throw new Did.MalformedCoreDidError(message)
 }
 
-const indyDidParser = (didString: string): Did.IndyDid => {
+const indyDidParser: DidParser = (didString: string): Did.IndyDid => {
   // Must allow for the possibility that no Match object is returned
   // or else TypeScript compiler won't allow me to access later.
   const match: Heket.Match | undefined = matchABNF(indyABNFParser, didString, indyDidParseErrorHandler)
