@@ -4,14 +4,14 @@ export enum Type {
 }
 
 export interface Did {
-  methodName: string
-  methodSpecificId: string
+  readonly methodName: string
+  readonly methodSpecificId: string
 }
 
 export interface CoreDid extends Did {}
 
 export interface IndyDid extends Did {
-  indyNamespace: string
+  readonly indyNamespace: string
 }
 
 export class MalformedCoreDidError extends Error {
