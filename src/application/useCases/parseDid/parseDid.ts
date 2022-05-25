@@ -1,4 +1,5 @@
 import * as Heket from 'heket'
+import { multi, method } from '@arrows/multimethod'
 import * as Did from '../../../domain/did/did'
 
 type DidParser = (didString: string) => Did.Did
@@ -33,17 +34,6 @@ const indyABNFString: string = `
 `
 
 const indyABNFParser: Heket.Parser = Heket.createParser(indyABNFString)
-
-export const ParseDid = (type: Did.Type, didString: string): Did.Did => {
-  switch (type) {
-    case Did.Type.Core:
-      return coreDidParser(didString)
-    case Did.Type.Indy:
-      return indyDidParser(didString)
-    default:
-      return coreDidParser(didString)
-  }
-}
 
 const coreDidParser: DidParser = (didString: string): Did.CoreDid => {
   // Must allow for the possibility that no Match object is returned
@@ -85,6 +75,15 @@ const indyDidParseErrorHandler: DidParserErrorHandler = (message: string): void 
   throw new Did.MalformedIndyDidError(message)
 }
 
+export const ParseDid = (type: Did.Type, didString: string): Did.Did => {
+  let parser = null
+  parser = multi(
+    () => type,
+    method(Did.Type.Core, coreDidParser),
+    method(Did.Type.Indy, indyDidParser)
+  )
+  return parser(didString)
+}
 const matchABNF = (parser: Heket.Parser, rawString: string, handler: DidParserErrorHandler): Heket.Match | undefined => {
   try {
     return parser.parse(rawString)
