@@ -1,8 +1,9 @@
 import * as Heket from 'heket'
 import { multi, method } from '@arrows/multimethod'
 import * as Did from '../../../domain/did/did'
+import { matchABNF } from '../../lib/parsers/abnf'
 
-type DidParser = (didString: string) => Did.Did
+type DidFactory = (didString: string) => Did.Did
 type DidParserErrorHandler = (errorMessage: string) => void
 
 const coreABNFString: string = `
@@ -35,10 +36,15 @@ const indyABNFString: string = `
 
 const indyABNFParser: Heket.Parser = Heket.createParser(indyABNFString)
 
-const coreDidParser: DidParser = (didString: string): Did.CoreDid => {
+const coreDidParser: DidFactory = (didString: string): Did.CoreDid => {
   // Must allow for the possibility that no Match object is returned
   // or else TypeScript compiler won't allow me to access later.
-  const match: Heket.Match | undefined = matchABNF(coreABNFParser, didString, coreDidParseErrorHandler)
+  let match: Heket.Match | undefined
+  try {
+    match = matchABNF(coreABNFParser, didString)
+  } catch (e) {
+    if (e instanceof Error) coreDidParseErrorHandler(e.message)
+  }
 
   // Optional chaining to ensure the Match was assigned in the Try block above.
   // Nullish coalescing to return a default string if result is 'undefined' or 'null'.
@@ -54,10 +60,16 @@ const coreDidParseErrorHandler: DidParserErrorHandler = (message: string): void 
   throw new Did.MalformedCoreDidError(message)
 }
 
-const indyDidParser: DidParser = (didString: string): Did.IndyDid => {
+const indyDidParser: DidFactory = (didString: string): Did.IndyDid => {
   // Must allow for the possibility that no Match object is returned
   // or else TypeScript compiler won't allow me to access later.
-  const match: Heket.Match | undefined = matchABNF(indyABNFParser, didString, indyDidParseErrorHandler)
+  let match: Heket.Match | undefined
+  try {
+    match = matchABNF(indyABNFParser, didString)
+  } catch (e) {
+    if (e instanceof Error) indyDidParseErrorHandler(e.message)
+  }
+
   const name: string = 'indy'
 
   // Optional chaining to ensure the Match was assigned in the Try block above.
@@ -83,12 +95,4 @@ export const ParseDid = (type: Did.Type, didString: string): Did.Did => {
     method(Did.Type.Core, coreDidParser),
     method(Did.Type.Indy, indyDidParser)
   )(didString)
-}
-
-const matchABNF = (parser: Heket.Parser, rawString: string, handler: DidParserErrorHandler): Heket.Match | undefined => {
-  try {
-    return parser.parse(rawString)
-  } catch (e) {
-    if (e instanceof Error) { handler(e.message) }
-  }
 }
