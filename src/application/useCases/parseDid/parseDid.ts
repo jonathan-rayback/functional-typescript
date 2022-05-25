@@ -76,14 +76,14 @@ const indyDidParseErrorHandler: DidParserErrorHandler = (message: string): void 
 }
 
 export const ParseDid = (type: Did.Type, didString: string): Did.Did => {
-  let parser = null
-  parser = multi(
+  const parser = multi(
     () => type,
     method(Did.Type.Core, coreDidParser),
     method(Did.Type.Indy, indyDidParser)
   )
   return parser(didString)
 }
+
 const matchABNF = (parser: Heket.Parser, rawString: string, handler: DidParserErrorHandler): Heket.Match | undefined => {
   try {
     return parser.parse(rawString)
