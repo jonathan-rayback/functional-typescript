@@ -1,11 +1,11 @@
-import * as Heket from 'heket'
+import { Match } from 'heket'
 import { multi, method } from '@arrows/multimethod'
 import * as Did from '../../../domain/did/did'
 import { matchABNF } from '../../lib/parsers/abnf'
 
-type DidParser = (match: Heket.Match) => Did.Did
+type DidParser = (match: Match) => Did.Did
 
-const coreDidParser: DidParser = (match: Heket.Match): Did.CoreDid => {
+const coreDidParser: DidParser = (match: Match): Did.CoreDid => {
   // Optional chaining to ensure the Match was assigned in the Try block above.
   // Nullish coalescing to return a default string if result is 'undefined' or 'null'.
   const name: string = match?.get('methodname') ?? 'empty' // TODO: 'empty' is surely the wrong default string
@@ -16,7 +16,7 @@ const coreDidParser: DidParser = (match: Heket.Match): Did.CoreDid => {
   }
 }
 
-const indyDidParser: DidParser = (match: Heket.Match): Did.IndyDid => {
+const indyDidParser: DidParser = (match: Match): Did.IndyDid => {
   const name: string = 'indy'
 
   // Optional chaining to ensure the Match was assigned in the Try block above.
@@ -33,7 +33,7 @@ const indyDidParser: DidParser = (match: Heket.Match): Did.IndyDid => {
 export const ParseDid = (type: Did.Type, didString: string): Did.Did => {
   // Must allow for the possibility that no Match object is returned
   // or else TypeScript compiler won't allow me to access later.
-  let match: Heket.Match | undefined
+  let match: Match | undefined
   try {
     match = matchABNF(type, didString)
   } catch (e) {
