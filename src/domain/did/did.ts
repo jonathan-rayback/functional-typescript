@@ -3,27 +3,11 @@ export enum Type {
   Indy = 'INDY'
 }
 
-export interface Did {
+export interface ParsedDid {
   readonly methodName: string
   readonly methodSpecificId: string
 }
 
-export interface CoreDid extends Did {}
-
-export interface IndyDid extends Did {
-  readonly indyNamespace: string
-}
-
-export class MalformedCoreDidError extends Error {
-  constructor (message: string) {
-    super(message)
-    this.name = 'MalformedCoreDidError'
-  }
-}
-
-export class MalformedIndyDidError extends Error {
-  constructor (message: string) {
-    super(message)
-    this.name = 'MalformedIndyDidError'
-  }
+export interface Did {
+  readonly parsedDid: ParsedDid
 }
