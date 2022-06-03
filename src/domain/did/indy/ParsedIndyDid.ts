@@ -24,6 +24,14 @@ export interface IndyDid extends Did {
   readonly parsedDid: ParsedIndyDid
 }
 
+export const MakeParsedIndyDid = (methodName: string, indyNamespace: string, methodSpecificId: string): ParsedIndyDid => {
+  return {
+    methodName: methodName,
+    indyNamespace: indyNamespace,
+    methodSpecificId: methodSpecificId
+  }
+}
+
 export class MalformedIndyDidError extends Error {
   constructor (message: string) {
     super(message)

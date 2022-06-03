@@ -14,6 +14,13 @@ export interface CoreDid extends Did {
   readonly parsedDid: ParsedCoreDid
 }
 
+export const MakeParsedCoreDid = (methodName: string, methodSpecificId: string): ParsedCoreDid => {
+  return {
+    methodName: methodName,
+    methodSpecificId: methodSpecificId
+  }
+}
+
 export class MalformedCoreDidError extends Error {
   constructor (message: string) {
     super(message)
