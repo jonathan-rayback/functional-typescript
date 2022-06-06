@@ -3,11 +3,11 @@ export enum Type {
   Indy = 'INDY'
 }
 
-export interface ParsedDid {
+export interface DidScheme {
   readonly methodName: string
   readonly methodSpecificId: string
 }
 
 export interface Did {
-  readonly parsedDid: ParsedDid
+  readonly scheme: DidScheme
 }

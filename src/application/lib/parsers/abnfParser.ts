@@ -1,15 +1,10 @@
-import { Type, ParsedDid } from '../../../domain/did/did'
-import { coreABNFString, MakeParsedCoreDid } from '../../../domain/did/core/ParsedCoreDid'
-import { indyABNFString, MakeParsedIndyDid } from '../../../domain/did/indy/ParsedIndyDid'
+import { Type, DidScheme } from '../../../domain/did/did'
+import { coreABNFString, MakeCoreDidScheme } from '../../../domain/did/core/CoreDidScheme'
+import { indyABNFString, MakeIndyDidScheme } from '../../../domain/did/indy/IndyDidScheme'
 import { createParser } from 'heket'
 import { multi, method } from '@arrows/multimethod'
 
-// const getABNF = multi(
-//   method(Type.Core, coreABNFString),
-//   method(Type.Indy, indyABNFString)
-// )
-
-export const matchABNF = (type: Type, rawString: string): ParsedDid => {
+export const ParseDidSchemeByABNF = (type: Type, rawString: string): DidScheme => {
   return multi(
     () => type,
     method(Type.Core, () => {
@@ -17,7 +12,7 @@ export const matchABNF = (type: Type, rawString: string): ParsedDid => {
       const match = parser.parse(rawString)
       const methodName = match?.get('methodname') ?? 'empty' // TODO: 'empty' is surely the wrong default string
       const methodSpecificId = match?.get('methodspecificid') ?? 'empty'
-      return MakeParsedCoreDid(methodName, methodSpecificId)
+      return MakeCoreDidScheme(methodName, methodSpecificId)
     }),
     method(Type.Indy, () => {
       const parser = createParser(indyABNFString)
@@ -25,7 +20,7 @@ export const matchABNF = (type: Type, rawString: string): ParsedDid => {
       const methodName = 'indy'
       const indyNamespace = match?.get('namespace') ?? 'empty'
       const methodSpecificId = match?.get('nsidstring') ?? 'empty'
-      return MakeParsedIndyDid(methodName, indyNamespace, methodSpecificId)
+      return MakeIndyDidScheme(methodName, indyNamespace, methodSpecificId)
     })
   )()
 }

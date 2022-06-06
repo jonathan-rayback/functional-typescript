@@ -1,4 +1,4 @@
-import { Did, ParsedDid } from '../did'
+import { Did, DidScheme } from '../did'
 
 // The base58char rule from the Indy Did spec uses characters to represent the allowed values.
 // Since ABNF is inherently case insensitive, denoting the rule that way doesn't work.
@@ -17,14 +17,14 @@ export const indyABNFString: string = `
                      / %d100 / %d101 / %d102 / %d103 / %d104 / %d105 / %d106 / %d107 / %d109 / %d110 / %d111 / %d112
                      / %d113 / %d114 / %d115 / %d116 / %d117 / %d118 / %d119 / %d120 / %d121 / %d122
 `
-export interface ParsedIndyDid extends ParsedDid {
+export interface IndyDidScheme extends DidScheme {
   readonly indyNamespace: string
 }
 export interface IndyDid extends Did {
-  readonly parsedDid: ParsedIndyDid
+  readonly scheme: IndyDidScheme
 }
 
-export const MakeParsedIndyDid = (methodName: string, indyNamespace: string, methodSpecificId: string): ParsedIndyDid => {
+export const MakeIndyDidScheme = (methodName: string, indyNamespace: string, methodSpecificId: string): IndyDidScheme => {
   return {
     methodName: methodName,
     indyNamespace: indyNamespace,
@@ -32,7 +32,7 @@ export const MakeParsedIndyDid = (methodName: string, indyNamespace: string, met
   }
 }
 
-export class MalformedIndyDidError extends Error {
+export class MalformedIndyDidSchemeError extends Error {
   constructor (message: string) {
     super(message)
     this.name = 'MalformedIndyDidError'

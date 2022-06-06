@@ -1,4 +1,4 @@
-import { Did, ParsedDid } from '../did'
+import { Did, DidScheme } from '../did'
 
 export const coreABNFString: string = `
   did                = "did:" methodname ":" methodspecificid
@@ -9,19 +9,19 @@ export const coreABNFString: string = `
   pctencoded        = "%" HEXDIG HEXDIG
 `
 
-export interface ParsedCoreDid extends ParsedDid {}
+export interface CoreDidScheme extends DidScheme {}
 export interface CoreDid extends Did {
-  readonly parsedDid: ParsedCoreDid
+  readonly scheme: CoreDidScheme
 }
 
-export const MakeParsedCoreDid = (methodName: string, methodSpecificId: string): ParsedCoreDid => {
+export const MakeCoreDidScheme = (methodName: string, methodSpecificId: string): CoreDidScheme => {
   return {
     methodName: methodName,
     methodSpecificId: methodSpecificId
   }
 }
 
-export class MalformedCoreDidError extends Error {
+export class MalformedCoreDidSchemeError extends Error {
   constructor (message: string) {
     super(message)
     this.name = 'MalformedCoreDidError'
