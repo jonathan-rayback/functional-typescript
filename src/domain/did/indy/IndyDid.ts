@@ -1,4 +1,5 @@
-import { Did, DidScheme } from '../did'
+import { Did } from '../did'
+import { DidScheme } from '../../didScheme/didScheme'
 
 // The base58char rule from the Indy Did spec uses characters to represent the allowed values.
 // Since ABNF is inherently case insensitive, denoting the rule that way doesn't work.
@@ -24,7 +25,11 @@ export interface IndyDid extends Did {
   readonly scheme: IndyDidScheme
 }
 
-export const MakeIndyDidScheme = (methodName: string, indyNamespace: string, methodSpecificId: string): IndyDidScheme => {
+export const MakeIndyDidScheme = (
+  methodName: string,
+  indyNamespace: string,
+  methodSpecificId: string
+): IndyDidScheme => {
   return {
     methodName: methodName,
     indyNamespace: indyNamespace,

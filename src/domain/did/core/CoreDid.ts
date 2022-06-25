@@ -1,4 +1,5 @@
-import { Did, DidScheme } from '../did'
+import { Did } from '../did'
+import { DidScheme } from '../../didScheme/didScheme'
 
 export const coreABNFString: string = `
   did                = "did:" methodname ":" methodspecificid
@@ -14,7 +15,10 @@ export interface CoreDid extends Did {
   readonly scheme: CoreDidScheme
 }
 
-export const MakeCoreDidScheme = (methodName: string, methodSpecificId: string): CoreDidScheme => {
+export const MakeCoreDidScheme = (
+  methodName: string,
+  methodSpecificId: string
+): CoreDidScheme => {
   return {
     methodName: methodName,
     methodSpecificId: methodSpecificId
