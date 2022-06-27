@@ -1,11 +1,8 @@
-import { DidScheme } from '../didScheme/didScheme'
-
 export enum MethodType {
   Core = 'CORE',
-  Indy = 'INDY'
+  Indy = 'INDY',
 }
 
 export interface Did {
-  readonly methodType: MethodType // asldfkjsalkdfjalskdfjlaskdfjlaskdfjlsakdfjlksadjflksadjflksadjflksadjflksajdflksajdflksajdflkasdfjsaldkaslkdfjaslkdfjdaslkjfdsalkasdfjlk
-  readonly scheme: DidScheme
+  readonly methodType: MethodType
 }
