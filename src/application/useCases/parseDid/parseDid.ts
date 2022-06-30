@@ -81,25 +81,27 @@ const tryParsingDid = (parser: Parser, didString: string): Match => {
 }
 
 export const CreateDidParser = (type: MethodType): DidParser => {
-  const rulesString = DidABNFStrings.get(type) ?? ''
-  const parser = createParser(rulesString)
+  const rulesString: string = DidABNFStrings.get(type) ?? ''
+  const parser: Parser = createParser(rulesString)
   switch (type) {
     case MethodType.DEFAULT:
       return (didString: string): ParsedDid => {
-        const match = tryParsingDid(parser, didString)
-        return {
+        const match: Match = tryParsingDid(parser, didString)
+        const parsedDid: ParsedDid = {
           methodName: match?.get('methodname') ?? 'empty',
           methodSpecificId: match?.get('methodspecificid') ?? 'empty'
         }
+        return parsedDid
       }
     case MethodType.INDY:
       return (didString: string): ParsedIndyDid => {
         const match = tryParsingDid(parser, didString)
-        return {
+        const parsedIndyDid: ParsedIndyDid = {
           methodName: 'indy',
           indyNamespace: match?.get('namespace') ?? 'empty',
           methodSpecificId: match?.get('nsidstring') ?? 'empty'
         }
+        return parsedIndyDid
       }
   }
 }

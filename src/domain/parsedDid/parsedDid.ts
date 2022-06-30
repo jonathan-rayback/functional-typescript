@@ -4,5 +4,5 @@ export interface ParsedDid {
 }
 
 export interface ParsedIndyDid extends ParsedDid {
-  indyNamespace: string
+  readonly indyNamespace: string
 }
