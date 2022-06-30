@@ -38,36 +38,6 @@ DidABNFStrings.set(
 `
 )
 
-// interface ParseDid extends Multi {
-//   (methodType: DidMethodType.Core): ParsedDid
-//   (methodType: DidMethodType.Indy): ParsedIndyDid
-// }
-
-// export const CreateABNFParser =
-//   (methodType: DidMethodType) => (didString: string) => {
-//     const rulesString = ABNFStrings.get(methodType) ?? ''
-//     const parser = createParser(rulesString)
-//     let match: Match
-//     try {
-//       match = parser.parse(didString)
-//     } catch (error) {
-//       const message = error instanceof Error ? error.message : 'Unknown Error'
-//       throw new ABNFDidParsingError(didString, DidMethodType.Core, message) // hardcoded did method type for now
-//     }
-//     const parseDid: ParseDid = multi(
-//       <T>(methodType: T): T => methodType,
-//       method(DidMethodType.Core, {
-//         methodName: match?.get('methodname') ?? 'empty', // TODO: 'empty' is surely the wrong default string,
-//         methodSpecificId: match?.get('methodspecificid') ?? 'empty'
-//       }),
-//       method(DidMethodType.Indy, {
-//         methodName: 'indy',
-//         indyNamespace: match?.get('namespace') ?? 'empty',
-//         methodSpecificId: match?.get('nsidstring') ?? 'empty'
-//       })
-//     )
-//     return parseDid
-//   }
 type DidParser = (didString: string) => ParsedDid
 
 const tryParsingDid = (type: MethodType, didString: string): Match => {
