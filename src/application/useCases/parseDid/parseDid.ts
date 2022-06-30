@@ -69,24 +69,24 @@ DidABNFStrings.set(
 //   }
 type DidParser = (didString: string) => ParsedDid
 
-const tryParsingDid = (parser: Parser, didString: string): Match => {
+const tryParsingDid = (type: MethodType, didString: string): Match => {
+  const rulesString: string = DidABNFStrings.get(type) ?? ''
+  const parser: Parser = createParser(rulesString)
   let match: Match
   try {
     match = parser.parse(didString)
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown Error'
-    throw new DidParsingError(didString, MethodType.DEFAULT, message) // hardcoded did method type for now
+    throw new DidParsingError(didString, type, message)
   }
   return match
 }
 
 export const CreateDidParser = (type: MethodType): DidParser => {
-  const rulesString: string = DidABNFStrings.get(type) ?? ''
-  const parser: Parser = createParser(rulesString)
   switch (type) {
     case MethodType.DEFAULT:
       return (didString: string): ParsedDid => {
-        const match: Match = tryParsingDid(parser, didString)
+        const match: Match = tryParsingDid(type, didString)
         const parsedDid: ParsedDid = {
           methodName: match?.get('methodname') ?? 'empty',
           methodSpecificId: match?.get('methodspecificid') ?? 'empty'
@@ -95,7 +95,7 @@ export const CreateDidParser = (type: MethodType): DidParser => {
       }
     case MethodType.INDY:
       return (didString: string): ParsedIndyDid => {
-        const match = tryParsingDid(parser, didString)
+        const match = tryParsingDid(type, didString)
         const parsedIndyDid: ParsedIndyDid = {
           methodName: 'indy',
           indyNamespace: match?.get('namespace') ?? 'empty',
