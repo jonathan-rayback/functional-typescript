@@ -1,6 +1,7 @@
 import { MethodType } from '../../../domain/did/did'
 import { ParsedDid, ParsedIndyDid } from '../../../domain/parsedDid/parsedDid'
 import { createParser, Match, Parser } from 'heket'
+import { multi, method } from '@arrows/multimethod'
 // import { multi, method, Multi } from '@arrows/multimethod'
 
 const DidABNFStrings: Map<MethodType, string> = new Map()
@@ -82,29 +83,29 @@ const tryParsingDid = (type: MethodType, didString: string): Match => {
   return match
 }
 
-export const CreateDidParser = (type: MethodType): DidParser => {
-  switch (type) {
-    case MethodType.DEFAULT:
-      return (didString: string): ParsedDid => {
-        const match: Match = tryParsingDid(type, didString)
-        const parsedDid: ParsedDid = {
-          methodName: match?.get('methodname') ?? 'empty',
-          methodSpecificId: match?.get('methodspecificid') ?? 'empty'
-        }
-        return parsedDid
-      }
-    case MethodType.INDY:
-      return (didString: string): ParsedIndyDid => {
-        const match = tryParsingDid(type, didString)
-        const parsedIndyDid: ParsedIndyDid = {
-          methodName: 'indy',
-          indyNamespace: match?.get('namespace') ?? 'empty',
-          methodSpecificId: match?.get('nsidstring') ?? 'empty'
-        }
-        return parsedIndyDid
-      }
-  }
-}
+export const CreateDidParser =
+  (type: MethodType): DidParser =>
+    (didString: string): ParsedDid => {
+      const match: Match = tryParsingDid(type, didString)
+      return multi(
+        () => type,
+        method(MethodType.DEFAULT, (): ParsedDid => {
+          const parsedDid: ParsedDid = {
+            methodName: match?.get('methodname') ?? 'empty',
+            methodSpecificId: match?.get('methodspecificid') ?? 'empty'
+          }
+          return parsedDid
+        }),
+        method(MethodType.INDY, (): ParsedIndyDid => {
+          const parsedDid = {
+            methodName: 'indy',
+            indyNamespace: match?.get('namespace') ?? 'empty',
+            methodSpecificId: match?.get('nsidstring') ?? 'empty'
+          }
+          return parsedDid
+        })
+      )() // execute the multi-method to be sure to return the parsedDid
+    }
 
 export class DidParsingError extends Error {
   constructor (didString: string, methodType: MethodType, message: string) {
