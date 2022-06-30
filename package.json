@@ -6,8 +6,8 @@
     "build": "rimraf dist && yarn build-ts",
     "test": "yarn jest",
     "lint": "eslint .",
-    "dev-start": "yarn build && node dist/application/application.js",
-    "start": "node dist/application/application.js"
+    "dev-start": "yarn build && node dist/infrastructure/main.js",
+    "start": "node dist/infrastructure/main.js"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
