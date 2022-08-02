@@ -1,4 +1,4 @@
-enum MethodType {
+const enum MethodType {
   DEFAULT = 'DEFAULT',
   INDY = 'INDY',
 }
