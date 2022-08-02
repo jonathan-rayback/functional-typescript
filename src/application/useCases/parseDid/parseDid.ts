@@ -1,4 +1,4 @@
-import { MethodType } from '../../../domain/methodType'
+import MethodType from '../../../domain/methodType'
 import ParsedDid from '../../../domain/parsedDids/parsedDid'
 import ParsedIndyDid from '../../../domain/parsedDids/parsedIndyDid'
 import { createParser, Match, Parser } from 'heket'

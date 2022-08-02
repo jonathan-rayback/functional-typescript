@@ -1,4 +1,6 @@
-export enum MethodType {
+enum MethodType {
   DEFAULT = 'DEFAULT',
   INDY = 'INDY',
 }
+
+export default MethodType

@@ -1,4 +1,4 @@
-import { MethodType } from './domain/methodType'
+import MethodType from './domain/methodType'
 import ParseDidFactory from './application/useCases/parseDid/parseDid'
 
 const coreDidString = 'did:key:123456jysh2'

@@ -1,4 +1,4 @@
-import { MethodType } from '../methodType'
+import MethodType from '../methodType'
 import ParsedDid from '../parsedDids/parsedDid'
 
 export default interface Did {
