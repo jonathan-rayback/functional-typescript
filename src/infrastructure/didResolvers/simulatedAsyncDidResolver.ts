@@ -1,8 +1,8 @@
-import DidDocument from '../../domain/didDocuments/didDocument'
-import DidResolver from '../../application/useCases/resolveDid/didResolver'
+import DidDocument from '../../domain/didDocument'
+import DidResolver from '../../domain/didResolver'
 
 const simulatedAsyncDidResolver: DidResolver = {
-  resolveDid: async (): Promise<DidDocument> => {
+  resolve: async (): Promise<DidDocument> => {
     const resolved = new Promise<DidDocument>((resolve, reject) => {
       // Simulate a trip to a remote VDR and back to resolve the DID
       setTimeout(() => {

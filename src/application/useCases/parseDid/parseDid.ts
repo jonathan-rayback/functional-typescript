@@ -1,14 +1,14 @@
-import MethodType from '../../../domain/methodType'
+import methodType from '../../../domain/didMethodTypes'
 import ParsedDid from '../../../domain/parsedDids/parsedDid'
 import ParsedIndyDid from '../../../domain/parsedDids/parsedIndyDid'
 import { createParser, Match, Parser } from 'heket'
 import { multi, method } from '@arrows/multimethod'
 // import { multi, method, Multi } from '@arrows/multimethod'
 
-const DidABNFStrings: Map<MethodType, string> = new Map()
+const DidABNFStrings: Map<methodType, string> = new Map()
 
 DidABNFStrings.set(
-  MethodType.DEFAULT,
+  methodType.DEFAULT,
   `
   did                = "did:" methodname ":" methodspecificid
   methodname        = 1*methodchar
@@ -19,7 +19,7 @@ DidABNFStrings.set(
 `
 )
 DidABNFStrings.set(
-  MethodType.INDY,
+  methodType.INDY,
   // The base58char rule from the Indy Did spec uses characters to represent the allowed values.
   // Since ABNF is inherently case insensitive, denoting the rule that way doesn't work.
   // Instead use the ASCII values in the format %d[ascii-decimal].
@@ -41,7 +41,7 @@ DidABNFStrings.set(
 
 type DidParser = (didString: string) => ParsedDid
 
-const tryParsingDid = (type: MethodType, didString: string): Match => {
+const tryParsingDid = (type: methodType, didString: string): Match => {
   const rulesString: string = DidABNFStrings.get(type) ?? ''
   const parser: Parser = createParser(rulesString)
   let match: Match
@@ -55,19 +55,19 @@ const tryParsingDid = (type: MethodType, didString: string): Match => {
 }
 
 // Factory function
-export default (type: MethodType): DidParser =>
+export default (type: methodType): DidParser =>
   (didString: string): ParsedDid => {
     const match: Match = tryParsingDid(type, didString)
     return multi(
       () => type,
-      method(MethodType.DEFAULT, (): ParsedDid => {
+      method(methodType.DEFAULT, (): ParsedDid => {
         const parsedDid: ParsedDid = {
           methodName: match?.get('methodname') ?? 'empty',
           methodSpecificId: match?.get('methodspecificid') ?? 'empty'
         }
         return parsedDid
       }),
-      method(MethodType.INDY, (): ParsedIndyDid => {
+      method(methodType.INDY, (): ParsedIndyDid => {
         const parsedDid = {
           methodName: 'indy',
           indyNamespace: match?.get('namespace') ?? 'empty',
@@ -79,7 +79,7 @@ export default (type: MethodType): DidParser =>
   }
 
 export class DidParsingError extends Error {
-  constructor (didString: string, methodType: MethodType, message: string) {
+  constructor (didString: string, methodType: methodType, message: string) {
     super(message)
     this.name = 'DidParsingError'
     this.didString = didString
@@ -87,5 +87,5 @@ export class DidParsingError extends Error {
   }
 
   didString: string
-  methodType: MethodType
+  methodType: methodType
 }

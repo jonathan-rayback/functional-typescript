@@ -1,16 +1,28 @@
-import DidDocument from '../../../../domain/didDocuments/didDocument'
-import ResolveDid from '../resolveDid'
-// Mocks for async calls
-import DidResolver from '../mocks/didResolver'
+import Did from '../../../../domain/dids/did'
+import DidMethodType from '../../../../domain/didMethodTypes'
+import DidDocument from '../../../../domain/didDocument'
+import MakeResolveDid from '../resolveDid'
+import DidResolver from './mocks/mockDidResolver'
+import MakeParseDid from '../../parseDid/parseDid'
+import ParsedDid from '../../../../domain/parsedDids/parsedDid'
+
+const DID_TYPE: DidMethodType = DidMethodType.DEFAULT
+const DID_STRING: string = 'did:key:123456jysh2'
+const ParseDid = MakeParseDid(DidMethodType.DEFAULT)
+const PARSED_DID: ParsedDid = ParseDid(DID_STRING)
+const DID: Did = {
+  methodType: DID_TYPE,
+  parsedDid: PARSED_DID
+}
+const ResolveDid = MakeResolveDid(DidResolver)
 
 test('Can resolve a DID', async () => {
-  // expect.assertions(1) // Don't really understand this, just saw it in some sample code, do I need it?
   const expectedDidDocument: DidDocument = {
     id: 'abcdef',
     key: '12345'
   }
   return expect(
-    await ResolveDid(DidResolver).then((actualDocument) =>
+    await ResolveDid(DID).then((actualDocument) =>
       didDocsAreEqual(expectedDidDocument, actualDocument)
     )
   )

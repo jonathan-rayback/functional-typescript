@@ -1,5 +1,5 @@
-import DidResolver from '../didResolver'
-import DidDocument from '../../../../domain/didDocuments/didDocument'
+import DidResolver from '../../../../../domain/didResolver'
+import DidDocument from '../../../../../domain/didDocument'
 
 const MOCKED_DID_DOCUMENT = {
   id: 'abcdef',
@@ -7,7 +7,7 @@ const MOCKED_DID_DOCUMENT = {
 }
 
 const mockForTestResolver: DidResolver = {
-  resolveDid: async (): Promise<DidDocument> => {
+  resolve: async (): Promise<DidDocument> => {
     const resolved = new Promise<DidDocument>((resolve, reject) => {
       resolve(MOCKED_DID_DOCUMENT)
     })

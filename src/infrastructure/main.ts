@@ -1,23 +1,38 @@
-import MethodType from '../domain/methodType'
-import ParseDidFactory from '../application/useCases/parseDid/parseDid'
-import ResolveDid from '../application/useCases/resolveDid/resolveDid'
-import SimlatedDidResolver from './didResolvers/simulatedAsyncDidResolver'
+import methodType from '../domain/didMethodTypes'
+import MakeParseDid from '../application/useCases/parseDid/parseDid'
+import MakeResolveDid from '../application/useCases/resolveDid/resolveDid'
+import DidResolver from './didResolvers/simulatedAsyncDidResolver'
+import Did from '../domain/dids/did'
 
 const main = (): void => {
   const coreDidString = 'did:key:123456jysh2'
   const indyDidString = 'did:indy:sovrin:staging:5nDyJVP1NrcPAttP3xwMB9'
 
-  const parseDefaultDid = ParseDidFactory(MethodType.DEFAULT)
-  const parseIndyDid = ParseDidFactory(MethodType.INDY)
+  const parseDefaultDid = MakeParseDid(methodType.DEFAULT)
+  const parseIndyDid = MakeParseDid(methodType.INDY)
 
-  console.log(parseDefaultDid(coreDidString))
-  console.log(parseIndyDid(indyDidString))
+  const ResolveDid = MakeResolveDid(DidResolver)
 
-  ResolveDid(SimlatedDidResolver).then(
+  const defaultDid: Did = {
+    methodType: methodType.DEFAULT,
+    parsedDid: parseDefaultDid(coreDidString)
+  }
+
+  const indyDid: Did = {
+    methodType: methodType.INDY,
+    parsedDid: parseIndyDid(indyDidString)
+  }
+
+  console.log(defaultDid)
+  console.log(indyDid)
+
+  ResolveDid(defaultDid).then(
     (didDocument) => {
       console.log(didDocument)
     },
-    () => {}
+    (error) => {
+      return error // just stubbing this out for now
+    }
   )
 }
 

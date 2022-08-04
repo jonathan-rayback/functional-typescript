@@ -1,8 +1,8 @@
 import Did from '../dids/did'
-import MethodType from '../methodType'
+import methodType from '../didMethodTypes'
 import ParsedIndyDid from '../parsedDids/parsedIndyDid'
 
 export default interface IndyDid extends Did {
-  readonly methodType: MethodType.INDY
+  readonly methodType: methodType.INDY
   readonly parsedDid: ParsedIndyDid
 }

@@ -1,8 +1,11 @@
-import DidDocument from '../../../domain/didDocuments/didDocument'
-import DidResolver from '../resolveDid/didResolver'
+import DidDocument from '../../../domain/didDocument'
+import DidResolver from '../../../domain/didResolver'
+import Did from '../../../domain/dids/did'
 
-const resolveDid = async (resolver: DidResolver): Promise<DidDocument> => {
-  return await resolver.resolveDid()
-}
+const makeResolveDid =
+  (resolver: DidResolver) =>
+    async (did: Did): Promise<DidDocument> => {
+      return await resolver.resolve(did)
+    }
 
-export default resolveDid
+export default makeResolveDid
