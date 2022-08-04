@@ -54,6 +54,7 @@ const tryParsingDid = (type: MethodType, didString: string): Match => {
   return match
 }
 
+// Factory function
 export default (type: MethodType): DidParser =>
   (didString: string): ParsedDid => {
     const match: Match = tryParsingDid(type, didString)

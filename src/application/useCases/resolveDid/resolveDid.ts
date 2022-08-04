@@ -1,8 +1,8 @@
 import DidDocument from '../../../domain/didDocuments/didDocument'
+import DidResolver from '../resolveDid/didResolver'
 
-export default function resolveDid (): DidDocument {
-  return {
-    id: 'abcdef',
-    key: '12345'
-  }
+const resolveDid = async (resolver: DidResolver): Promise<DidDocument> => {
+  return await resolver.resolveDid()
 }
+
+export default resolveDid
