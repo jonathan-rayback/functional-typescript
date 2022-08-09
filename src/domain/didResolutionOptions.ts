@@ -1,3 +1,3 @@
 export default interface didResolutionOptions {
-  accept: string
+  readonly accept: string
 }

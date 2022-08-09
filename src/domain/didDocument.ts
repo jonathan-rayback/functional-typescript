@@ -1,4 +1,4 @@
 export default interface DidDocument {
-  id: string
-  key: string
+  readonly id: string
+  readonly key: string
 }
