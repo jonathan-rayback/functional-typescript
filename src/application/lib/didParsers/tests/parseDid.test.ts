@@ -1,10 +1,12 @@
-import methodType from '../../../../domain/didMethodTypes'
+// import methodType from '../../../../domain/didMethodTypes'
 import ParsedDid from '../../../../domain/parsedDids/parsedDid'
 import ParsedIndyDid from '../../../../domain/parsedDids/parsedIndyDid'
-import ParseDidFactory, { DidParsingError } from '../parseDid'
+import MakeParseDid, { DidParsingError } from '../parseDid'
+import CoreParser from '../parsers/coreParser'
+import IndyParser from '../parsers/indyParser'
 
-const parseDefaultDid = ParseDidFactory(methodType.DEFAULT)
-const parseIndyDid = ParseDidFactory(methodType.INDY)
+const parseDefaultDid = MakeParseDid(CoreParser)
+const parseIndyDid = MakeParseDid(IndyParser)
 
 test('Can parse well-formed default DID', () => {
   const didString = 'did:abc:12345'

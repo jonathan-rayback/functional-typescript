@@ -2,19 +2,20 @@ import Did from '../../../../domain/dids/did'
 import DidMethodType from '../../../../domain/didMethodTypes'
 import DidDocument from '../../../../domain/didDocument'
 import MakeResolveDid from '../resolveDid'
-import DidResolver from './mocks/mockDidResolver'
-import MakeParseDid from '../../parseDid/parseDid'
+import MockDidResolver from './mocks/mockDidResolver'
+// import MakeParseDid from '../../../lib/didParsers/parseDid'
 import ParsedDid from '../../../../domain/parsedDids/parsedDid'
+import CoreDidParser from '../../../lib/didParsers/parsers/coreParser'
 
 const DID_TYPE: DidMethodType = DidMethodType.DEFAULT
 const DID_STRING: string = 'did:key:123456jysh2'
-const ParseDid = MakeParseDid(DidMethodType.DEFAULT)
-const PARSED_DID: ParsedDid = ParseDid(DID_STRING)
+const DidParser = CoreDidParser
+const PARSED_DID: ParsedDid = DidParser.parse(DID_STRING)
 const DID: Did = {
   methodType: DID_TYPE,
   parsedDid: PARSED_DID
 }
-const ResolveDid = MakeResolveDid(DidResolver)
+const ResolveDid = MakeResolveDid(MockDidResolver)
 
 test('Can resolve a DID', async () => {
   const expectedDidDocument: DidDocument = {
