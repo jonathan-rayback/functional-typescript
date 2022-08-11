@@ -1,5 +1,4 @@
-import DidResolver from '../../../../../domain/didResolver'
-import DidDocument from '../../../../../domain/didDocument'
+import { DidResolver, DidDocument } from '../../../../../domain/domain'
 
 const MOCKED_DID_DOCUMENT = {
   id: 'abcdef',

@@ -1,4 +1,4 @@
-import ParsedIndyDid from '../../../../domain/parsedDids/parsedIndyDid'
+import { ParsedIndyDid } from '../../../../domain/domain'
 import { DidParsingError } from '../parseDid'
 import { createParser, Match, Parser } from 'heket'
 

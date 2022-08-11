@@ -1,5 +1,4 @@
-import DidDocument from '../../domain/didDocument'
-import DidResolver from '../../domain/didResolver'
+import { DidDocument, DidResolver } from '../../domain/domain'
 
 const simulatedAsyncDidResolver: DidResolver = {
   resolve: async (): Promise<DidDocument> => {

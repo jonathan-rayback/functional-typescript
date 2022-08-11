@@ -1,6 +1,4 @@
-import DidDocument from '../../../domain/didDocument'
-import DidResolver from '../../../domain/didResolver'
-import Did from '../../../domain/dids/did'
+import { Did, DidDocument, DidResolver } from '../../../domain/domain'
 
 const makeResolveDid =
   (resolver: DidResolver) =>

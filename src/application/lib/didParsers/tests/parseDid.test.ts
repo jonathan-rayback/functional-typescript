@@ -1,6 +1,5 @@
 // import methodType from '../../../../domain/didMethodTypes'
-import ParsedDid from '../../../../domain/parsedDids/parsedDid'
-import ParsedIndyDid from '../../../../domain/parsedDids/parsedIndyDid'
+import { ParsedDid, ParsedIndyDid } from '../../../../domain/domain'
 import MakeParseDid, { DidParsingError } from '../parseDid'
 import CoreParser from '../parsers/coreParser'
 import IndyParser from '../parsers/indyParser'

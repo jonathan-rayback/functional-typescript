@@ -1,8 +1,7 @@
-import methodType from '../domain/didMethodTypes'
+import { Did, DidMethodType } from '../domain/domain'
 import MakeParseDid from '../application/lib/didParsers/parseDid'
 import MakeResolveDid from '../application/useCases/resolveDid/resolveDid'
 import DidResolver from './didResolvers/simulatedAsyncDidResolver'
-import Did from '../domain/dids/did'
 import CoreDidParser from '../application/lib/didParsers/parsers/coreParser'
 import IndyParser from '../application/lib/didParsers/parsers/indyParser'
 
@@ -16,12 +15,12 @@ const main = (): void => {
   const ResolveDid = MakeResolveDid(DidResolver)
 
   const defaultDid: Did = {
-    methodType: methodType.DEFAULT,
+    methodType: DidMethodType.DEFAULT,
     parsedDid: parseDefaultDid(coreDidString)
   }
 
   const indyDid: Did = {
-    methodType: methodType.INDY,
+    methodType: DidMethodType.INDY,
     parsedDid: parseIndyDid(indyDidString)
   }
 

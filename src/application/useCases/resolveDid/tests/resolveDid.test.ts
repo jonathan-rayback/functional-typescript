@@ -1,10 +1,11 @@
-import Did from '../../../../domain/dids/did'
-import DidMethodType from '../../../../domain/didMethodTypes'
-import DidDocument from '../../../../domain/didDocument'
+import {
+  Did,
+  DidMethodType,
+  DidDocument,
+  ParsedDid
+} from '../../../../domain/domain'
 import MakeResolveDid from '../resolveDid'
 import MockDidResolver from './mocks/mockDidResolver'
-// import MakeParseDid from '../../../lib/didParsers/parseDid'
-import ParsedDid from '../../../../domain/parsedDids/parsedDid'
 import CoreDidParser from '../../../lib/didParsers/parsers/coreParser'
 
 const DID_TYPE: DidMethodType = DidMethodType.DEFAULT
