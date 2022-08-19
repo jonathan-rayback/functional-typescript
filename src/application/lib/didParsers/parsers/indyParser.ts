@@ -1,6 +1,10 @@
-import { ParsedIndyDid } from '../../../../domain/domain'
+import {
+  IndyDid,
+  validateDidString,
+  ValidDidString
+} from '../../../../domain/domain'
 import { DidParsingError } from '../parseDid'
-import { createParser, Match, Parser } from 'heket'
+import { createParser, Parser } from 'heket'
 
 // The base58char rule from the Indy Did spec uses characters to represent the allowed values.
 // Since ABNF is inherently case insensitive, denoting the rule that way doesn't work.
@@ -21,20 +25,22 @@ const abnfString = `
 `
 
 export default {
-  parse (didString: string) {
+  parse (didString: ValidDidString) {
     const abnfParser: Parser = createParser(abnfString)
-    let match: Match
+    let match
     try {
       match = abnfParser.parse(didString)
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown Error'
+      const message =
+        error instanceof Error ? error.message : "Can't Parse DID String"
       throw new DidParsingError(didString, message)
     }
-    const parsedDid: ParsedIndyDid = {
+    const did: IndyDid = {
+      raw: validateDidString(didString) as ValidDidString,
       methodName: 'indy',
       indyNamespace: match?.get('namespace') ?? 'empty',
       methodSpecificId: match?.get('nsidstring') ?? 'empty'
     }
-    return parsedDid
+    return did
   }
 }

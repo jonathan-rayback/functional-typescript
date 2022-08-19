@@ -1,4 +1,4 @@
-import { DidParser, ParsedDid } from '../../../domain/domain'
+import { Did, DidParser, ValidDidString } from '../../../domain/domain'
 
 export class DidParsingError extends Error {
   constructor (didString: string, message: string) {
@@ -11,6 +11,6 @@ export class DidParsingError extends Error {
 }
 
 export default (parser: DidParser) =>
-  (didString: string): ParsedDid => {
+  (didString: ValidDidString): Did => {
     return parser.parse(didString)
   }

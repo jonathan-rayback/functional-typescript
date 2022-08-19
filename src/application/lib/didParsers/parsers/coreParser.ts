@@ -1,6 +1,10 @@
-import { ParsedDid } from '../../../../domain/domain'
+import {
+  CoreDid,
+  validateDidString,
+  ValidDidString
+} from '../../../../domain/domain'
 import { DidParsingError } from '../parseDid'
-import { createParser, Match, Parser } from 'heket'
+import { createParser, Parser } from 'heket'
 
 const abnfString = `
   did                = "did:" methodname ":" methodspecificid
@@ -12,19 +16,21 @@ const abnfString = `
 `
 
 export default {
-  parse (didString: string) {
+  parse (didString: ValidDidString) {
     const abnfParser: Parser = createParser(abnfString)
-    let match: Match
+    let match
     try {
       match = abnfParser.parse(didString)
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown Error'
+      const message =
+        error instanceof Error ? error.message : "Can't Parse DID String"
       throw new DidParsingError(didString, message)
     }
-    const parsedDid: ParsedDid = {
+    const did: CoreDid = {
+      raw: validateDidString(didString) as ValidDidString,
       methodName: match?.get('methodname') ?? 'empty',
       methodSpecificId: match?.get('methodspecificid') ?? 'empty'
     }
-    return parsedDid
+    return did
   }
 }
