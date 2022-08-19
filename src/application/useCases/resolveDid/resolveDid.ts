@@ -1,8 +1,8 @@
-import { CoreDid, DidDocument, DidResolver } from '../../../domain/domain'
+import { Did, DidDocument, DidResolver } from '../../../domain/domain'
 
 const makeResolveDid =
   (resolver: DidResolver) =>
-    async (did: CoreDid): Promise<DidDocument> => {
+    async (did: Did): Promise<DidDocument> => {
       return await resolver.resolve(did)
     }
 

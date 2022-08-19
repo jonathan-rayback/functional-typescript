@@ -1,15 +1,4 @@
-export type Did = CoreDid | IndyDid
-
-// THIS COULD WORK - PLEASE SEE DISCUSSION AT
-// https://github.com/Microsoft/TypeScript/issues/202
-//
-// and this post is a great summary:
-//
-// https://michalzalecki.com/nominal-typing-in-typescript/
-
-// export type DidString = string & {
-//   __brand: 'Did String'
-// }
+export type Did = IndyDid
 
 export type ValidDidString = string & {
   __brand: 'Valid Did String'
@@ -25,9 +14,8 @@ export const validateDidString = (
 }
 
 // so now the question is how to constrain raw dids, method names and method specific ids to be typed beyond string
-export type CoreDid = {
+type CoreDid = {
   readonly raw: ValidDidString
-  // readonly raw: string
   readonly methodName: string
   readonly methodSpecificId: string
 }
@@ -42,7 +30,7 @@ export type DidDocument = {
 }
 
 export type DidParser = {
-  readonly parse: (didString: ValidDidString) => CoreDid
+  readonly parse: (didString: ValidDidString) => Did
 }
 
 export type DidResolutionOptions = {
@@ -52,7 +40,7 @@ export type DidResolutionOptions = {
 // Spec for DID resolvers is found at https://www.w3.org/TR/did-core/#did-resolution
 export type DidResolver = {
   readonly resolve: (
-    did: CoreDid,
+    did: Did,
     resolutionOptions?: DidResolutionOptions
   ) => Promise<DidDocument>
 }
