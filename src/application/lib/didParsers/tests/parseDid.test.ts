@@ -1,18 +1,9 @@
 // import methodType from '../../../../domain/didMethodTypes'
-import { IndyDid, CoreDid, ValidDidString } from '../../../../domain/domain'
+import { IndyDid, ValidDidString } from '../../../../domain/domain'
 import MakeParseDid, { DidParsingError } from '../parseDid'
-import CoreParser from '../parsers/coreParser'
 import IndyParser from '../parsers/indyParser'
 
-const parseDefaultDid = MakeParseDid(CoreParser)
 const parseIndyDid = MakeParseDid(IndyParser)
-
-test('Can parse well-formed default DID', () => {
-  const didString = 'did:abc:12345' as ValidDidString
-  const parsedDid: CoreDid = parseDefaultDid(didString)
-  expect(parsedDid.methodName).toBe('abc')
-  expect(parsedDid.methodSpecificId).toBe('12345')
-})
 
 test('Can parse well-formed Indy Did string (no subspace)', () => {
   const didString = 'did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSMB' as ValidDidString
