@@ -1,29 +1,21 @@
-import { validateDidString } from '../domain/domain'
-import MakeParseDid from '../application/lib/didParsers/parseDid'
-import MakeResolveDid from '../application/useCases/resolveDid/resolveDid'
-import DidResolver from './didResolvers/simulatedAsyncDidResolver'
-import IndyParser from '../application/lib/didParsers/parsers/indyParser'
+import { makeIndyDid } from '../domain/dids/IndyDid'
+import MakeResolveDid from '../application/ports/resolveDid/resolveDid'
+import DidResolver from '../application/adapters/primary/resolvers/indyResolver'
 
 const main = (): void => {
-  const indyDidString = validateDidString(
-    'did:indy:sovrin:staging:5nDyJVP1NrcPAttP3xwMB9'
-  )
-
-  const parseIndyDid = MakeParseDid(IndyParser)
+  const did = makeIndyDid('did:indy:sovrin:staging:5nDyJVP1NrcPAttP3xwMB9')
   const ResolveDid = MakeResolveDid(DidResolver)
-
-  if (indyDidString !== undefined) {
-    const indyDid = parseIndyDid(indyDidString)
-
-    ResolveDid(indyDid).then(
+  console.log(did)
+  if (did !== undefined) {
+    ResolveDid(did).then(
       (didDocument) => {
-        console.log(didDocument)
+        console.log(JSON.parse(didDocument))
       },
       (error) => {
         return error // just stubbing this out for now
       }
     )
-    console.log(indyDid)
+    console.log(did)
   }
 }
 
