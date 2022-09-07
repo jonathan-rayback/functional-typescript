@@ -1,8 +1,8 @@
 import { Did, DidDocument } from '../../../domain/core'
-import { DidResolver } from '../../../domain/didResolver'
+import { Resolver } from '../../ports/inbound/resolve'
 
 const makeResolveDid =
-  (resolver: DidResolver) =>
+  (resolver: Resolver) =>
     async (did: Did): Promise<DidDocument> => {
       return await resolver.resolve(did)
     }

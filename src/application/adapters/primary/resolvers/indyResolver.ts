@@ -1,8 +1,9 @@
 import { DidDocument } from '../../../../domain/core'
-import { DidResolver } from '../../../../domain/didResolver'
+import { Resolver } from '../../../ports/inbound/resolve'
 
-const indyResolver: DidResolver = {
-  resolve: async (): Promise<DidDocument> => {
+const indyResolver: Resolver = {
+  resolve: async (did, resolutionOptions?): Promise<DidDocument> => {
+    console.log(`Resolving Did: ${did}`)
     const resolved = new Promise<DidDocument>((resolve, reject) => {
       // Simulate a trip to a remote VDR and back to resolve the DID
       setTimeout(() => {

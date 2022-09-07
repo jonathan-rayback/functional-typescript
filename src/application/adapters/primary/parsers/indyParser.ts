@@ -1,5 +1,5 @@
 import { IndyDid, ParsedIndyDid } from '../../../../domain/dids/IndyDid'
-import { DidParsingError } from '../../../ports/parseDid/parseDid'
+import { DidParsingError } from '../../../useCases/parseDid/parseDid'
 import { createParser, Parser } from 'heket'
 
 // The base58char rule from the Indy Did spec uses characters to represent the allowed values.

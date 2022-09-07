@@ -1,29 +1,30 @@
 import { DidDocument } from '../../../../domain/core'
-import { DidResolver } from '../../../../domain/didResolver'
+import { Resolver } from '../../../ports/inbound/resolve'
 import { IndyDidDocument } from '../../../../domain/didDocuments/IndyDidDocument'
 import { makeIndyDid } from '../../../../domain/dids/IndyDid'
 import MakeResolveDid from '../resolveDid'
 
-const MOCKED_DID_DOCUMENT = JSON.stringify({
+const MOCKED_INDY_DID_DOCUMENT = JSON.stringify({
   id: 'abcdef',
   data: '12345'
-}) as DidDocument
+}) as IndyDidDocument
 
-const mockForTestResolver: DidResolver = {
-  resolve: async (): Promise<DidDocument> => {
-    const resolved = new Promise<DidDocument>((resolve, reject) => {
-      resolve(MOCKED_DID_DOCUMENT)
+const mockForTestIndyResolver: Resolver = {
+  resolve: async (did, resolutionOptions?): Promise<IndyDidDocument> => {
+    console.log(`Mock resolving Did: ${did}`)
+    const resolved = new Promise<IndyDidDocument>((resolve, reject) => {
+      resolve(MOCKED_INDY_DID_DOCUMENT)
     })
     return await resolved
   }
 }
 
 const did = makeIndyDid('did:indy:sovrin:staging:5nDyJVP1NrcPAttP3xwMB9')
-const ResolveDid = MakeResolveDid(mockForTestResolver)
+const ResolveDid = MakeResolveDid(mockForTestIndyResolver)
 
 if (did !== undefined) {
   test('Can resolve a DID', async () => {
-    const expectedDidDocument: DidDocument = `{
+    const expectedDidDocument: IndyDidDocument = `{
       id: 'abcdef',
       data: '12345'
     }` as IndyDidDocument

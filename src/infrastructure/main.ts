@@ -1,5 +1,5 @@
 import { makeIndyDid } from '../domain/dids/IndyDid'
-import MakeResolveDid from '../application/ports/resolveDid/resolveDid'
+import MakeResolveDid from '../application/useCases/resolveDid/resolveDid'
 import DidResolver from '../application/adapters/primary/resolvers/indyResolver'
 
 const main = (): void => {
