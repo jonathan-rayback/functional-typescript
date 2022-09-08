@@ -1,6 +1,6 @@
-import { Resolver } from '../../../../domain/core/resolver'
 import { IndyDidDocument } from '../../../../domain/didDocuments/indyDidDocument'
-import { Ledger } from '../../../../domain/core/ledger'
+import { Resolver } from '../../../../application/ports/primary/resolver'
+import { Ledger } from '../../../../application/ports/secondary/ledger'
 
 const MOCKED_INDY_DID_DOCUMENT = JSON.stringify({
   id: 'abcdef',

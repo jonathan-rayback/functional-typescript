@@ -1,5 +1,5 @@
-import { IndyDid } from '../../../domain/dids/indy'
-import { IndyValidator } from '../../../domain/validators/indyValidator'
+import { IndyDid } from '../indy'
+import { IndyValidator } from '../../validators/indyValidator'
 import { DidFactory } from './factory'
 
 export const IndyFactory: DidFactory = (

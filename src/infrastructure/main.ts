@@ -1,7 +1,7 @@
-import { IndyFactory } from '../application/factories/did/indyFactory'
-import { IndyResolver } from '../application/adapters/primary/resolvers/indyResolver'
+import { IndyFactory } from '../domain/dids/factories/indyFactory'
 import { Application } from '../application/application'
-import { Sovrin } from '../application/adapters/secondary/ledgers/indy/sovrin'
+import { IndyResolver } from './adapters/primary/resolvers/indyResolver'
+import { Sovrin } from './adapters/secondary/ledgers/indy/sovrin'
 
 const main = (): void => {
   const did = IndyFactory('did:indy:sovrin:staging:5nDyJVP1NrcPAttP3xwMB9')

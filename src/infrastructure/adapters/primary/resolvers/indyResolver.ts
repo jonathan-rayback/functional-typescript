@@ -1,6 +1,6 @@
 import { DidDocument } from '../../../../domain/core/didDocument'
-import { Ledger } from '../../../../domain/core/ledger'
-import { Resolver } from '../../../../domain/core/resolver'
+import { Ledger } from '../../../../application/ports/secondary/ledger'
+import { Resolver } from '../../../../application/ports/primary/resolver'
 
 export const IndyResolver = (ledger: Ledger): Resolver => {
   return {

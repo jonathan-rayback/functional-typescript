@@ -1,3 +1,3 @@
-import { Resolver } from '../domain/core/resolver'
+import { Resolver } from './ports/primary/resolver'
 
 export type Application = Resolver

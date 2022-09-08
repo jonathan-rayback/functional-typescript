@@ -2,7 +2,7 @@ import { DidDocument } from '../../../../../domain/core/didDocument'
 import { MockResolver } from '../mockResolver'
 import { MockLedger } from '../../../secondary/ledgers/mockLedger'
 import { IndyDidDocument } from '../../../../../domain/didDocuments/indyDidDocument'
-import { IndyFactory } from '../../../../factories/did/indyFactory'
+import { IndyFactory } from '../../../../../domain/dids/factories/indyFactory'
 
 const did = IndyFactory('did:indy:sovrin:staging:5nDyJVP1NrcPAttP3xwMB9')
 const resolver = MockResolver(MockLedger)
