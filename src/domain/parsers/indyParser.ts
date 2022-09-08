@@ -1,5 +1,6 @@
-import { IndyDid, ParsedIndyDid } from '../../../../domain/dids/IndyDid'
-import { DidParsingError } from '../../../useCases/parseDid/parseDid'
+import { IndyDid } from '../dids/indy'
+import { ParsedIndy } from '../dids/parsed/parsedIndy'
+import { DidParsingError } from '../errors/didParsingError'
 import { createParser, Parser } from 'heket'
 
 // The base58char rule from the Indy Did spec uses characters to represent the allowed values.
@@ -31,7 +32,7 @@ export default {
         error instanceof Error ? error.message : "Can't Parse DID String"
       throw new DidParsingError(did, message)
     }
-    const parsedDid: ParsedIndyDid = {
+    const parsedDid: ParsedIndy = {
       methodName: 'indy',
       indyNamespace: match?.get('namespace') ?? 'empty',
       methodSpecificId: match?.get('nsidstring') ?? 'empty'

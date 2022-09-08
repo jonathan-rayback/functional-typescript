@@ -1,12 +1,12 @@
-import { IndyDid } from '../../../../domain/dids/IndyDid'
-import MakeParseDid, { DidParsingError } from '../parseDid'
-import IndyParser from '../../../adapters/primary/parsers/indyParser'
+import { IndyDid } from '../../dids/indy'
+import { DidParsingError } from '../../errors/didParsingError'
+import IndyParser from '../indyParser'
 
-const parseIndyDid = MakeParseDid(IndyParser)
+const parser = IndyParser
 
 test('Can parse well-formed Indy Did string (no subspace)', () => {
   const didString = 'did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSMB' as IndyDid
-  const parsedDid = parseIndyDid(didString)
+  const parsedDid = parser.parse(didString)
   expect(parsedDid.methodName).toBe('indy')
   expect(parsedDid.indyNamespace).toBe('sovrin:') // Indy DID spec requires the last character of the namespace to be ':'
   expect(parsedDid.methodSpecificId).toBe('6cgbu8ZPoWTnR5Rv5JcSMB')
@@ -14,7 +14,7 @@ test('Can parse well-formed Indy Did string (no subspace)', () => {
 
 test('Can parse well-formed Indy Did string (subspace)', () => {
   const didString = 'did:indy:sovrin:staging:6cgbu8ZPoWTnR5Rv5JcSMB' as IndyDid
-  const parsedDid = parseIndyDid(didString)
+  const parsedDid = parser.parse(didString)
   expect(parsedDid.methodName).toBe('indy')
   expect(parsedDid.indyNamespace).toBe('sovrin:staging:') // Indy DID spec requires the last character of the namespace to be ':'
   expect(parsedDid.methodSpecificId).toBe('6cgbu8ZPoWTnR5Rv5JcSMB')
@@ -24,7 +24,7 @@ test('Mispelled method name in malformed Indy DID string throws error while pars
   const malformedDidString = 'did:iny:sovrin:6cgbu8ZPoWTnR5Rv5JcSMB' as IndyDid
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const parsedDid = parseIndyDid(malformedDidString)
+    const parsedDid = parser.parse(malformedDidString)
   }).toThrow(DidParsingError)
 })
 
@@ -32,7 +32,7 @@ test('No namespace in malformed Indy DID string throws error while parsing', () 
   const malformedDidString = 'did:indy:6cgbu8ZPoWTnR5Rv5JcSMB' as IndyDid
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const parsedDid = parseIndyDid(malformedDidString)
+    const parsedDid = parser.parse(malformedDidString)
   }).toThrow(DidParsingError)
 })
 
@@ -42,7 +42,7 @@ test('Non-Base-58 "0" char in malformed Indy DID string throws error while parsi
     ('did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest) as IndyDid
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const parsedDid = parseIndyDid(indyDidStringWithIllegalBase58Char)
+    const parsedDid = parser.parse(indyDidStringWithIllegalBase58Char)
   }).toThrow(DidParsingError)
 })
 
@@ -52,7 +52,7 @@ test('Non-Base-58 "O" char in malformed Indy DID string throws error while parsi
     ('did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest) as IndyDid
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const parsedDid = parseIndyDid(indyDidStringWithIllegalBase58Char)
+    const parsedDid = parser.parse(indyDidStringWithIllegalBase58Char)
   }).toThrow(DidParsingError)
 })
 
@@ -62,7 +62,7 @@ test('Non-Base-58 "I" char in malformed Indy DID string throws error while parsi
     ('did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest) as IndyDid
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const parsedDid = parseIndyDid(indyDidStringWithIllegalBase58Char)
+    const parsedDid = parser.parse(indyDidStringWithIllegalBase58Char)
   }).toThrow(DidParsingError)
 })
 
@@ -72,6 +72,6 @@ test('Non-Base-58 "l" char in malformed Indy DID string throws error while parsi
     ('did:indy:sovrin:6cgbu8ZPoWTnR5Rv5JcSM' + charToTest) as IndyDid
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const parsedDid = parseIndyDid(indyDidStringWithIllegalBase58Char)
+    const parsedDid = parser.parse(indyDidStringWithIllegalBase58Char)
   }).toThrow(DidParsingError)
 })

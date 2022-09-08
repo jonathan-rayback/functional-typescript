@@ -1,4 +1,6 @@
-import { Did, DidResolutionOptions, DidDocument } from '../../../domain/core'
+import { Did } from './did'
+import { DidDocument } from './didDocument'
+import { DidResolutionOptions } from './resolutionOptions'
 
 // Spec for DID resolvers is found at https://www.w3.org/TR/did-core/#did-resolution
 
